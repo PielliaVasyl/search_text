@@ -1,6 +1,21 @@
 from django.shortcuts import render
 
-# Create your views here.
+from search.forms import SearchForm
+
 
 def home(request):
-    return render(request, "home.html", {})
+    title = "Welcome"
+    form = SearchForm(request.POST or None)
+
+    context = {
+        "title": title,
+        "form": form
+    }
+
+    if form.is_valid():
+        form.save()
+        context = {
+            "title": "Thank you",
+        }
+
+    return render(request, "home.html", context)
